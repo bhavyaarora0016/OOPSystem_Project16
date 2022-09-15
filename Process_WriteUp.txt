@@ -1,0 +1,25 @@
+﻿						Storing School Data Project
+
+
+STUDENT CLASS : This class implement the InterOp Inteface.It contains two properties named StudentName and Class.
+It cointains the List of Students DataStructure to store the data of the student then the FileWrite() Method used to Write Student Data 
+inside the Student.txt File for that I created a FileStream object with FileMode as Append and FileAcces as Write.then create a StreamWriter Object
+to append the data which is entered by the user in the Format (StudentName-Class). I store the data in this format because it is easy to
+Split the data while reading from the Student.txt File. Then FileRead() Method this method used to read the Student Data Whice we already Stored
+in the Student.txt File and also it copy these student data inside the List. and finally PrintData() Method which iterate through the List Where we 
+store our Student data and print the Student Data.
+
+TEACHER CLASS : This class contains 3 Properties Teacher Name , Class and Subject and has a list of Teacher Datastructure.
+it contains all the method same as the Student Class because it also implement the same interface IFileOperations but here the Difference is 
+We store the data under Teacher.txt File. So every teacher in the list must have Name,Class and a Subject.
+
+SUBJECT CLASS : This class cointains 2 Properties Subject Name and Subject Code. this is also contain all the methods Which are implemented on
+Steudent and Teacher Class. this has the list of every subject and it's subject code.
+
+Main Program : In the main method, created a Switch statement for Add,Print and search content in the application.
+1 for Adding the content 2 for Printing the content 3 for search for a content. For example if the user entered 1 for adding content then the program asks 
+user to specify the File he/she wants to write for that I wrote an another switch statement insdie the main switch then if the user entered again 1
+student File is selected and it accept student name ans class and store inside the Student.txt File.
+
+
+GitHub Link: 

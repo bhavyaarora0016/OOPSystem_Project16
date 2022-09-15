@@ -1,0 +1,522 @@
+﻿=====================================================================
+
+STUDENT CLASS
+
+    public class StudentClass : InterOp
+    {
+		private string sname;
+
+		public string StudentName
+		{
+			get { return sname; }
+			set { sname = value; }
+		}
+
+        private int _Class;
+
+        public int Class
+        {
+            get { return _Class; }
+            set { _Class = value; }
+        }
+
+        public static List<StudentClass> StudentList = new List<StudentClass>();
+
+        public void PrintData()
+        {
+            foreach (var item in StudentList)
+            {
+                Console.WriteLine("Student name: " + item.StudentName);
+                Console.WriteLine("class: " + item.Class);
+            }
+
+            Console.WriteLine("--------------------");
+        }
+
+        public void FileWrite()
+        {
+            FileStream fs = new FileStream("StudentData.txt", FileMode.Append, FileAccess.Write);
+            StreamWriter sw = null;
+
+            try
+            {
+                sw = new StreamWriter(fs);
+                Console.WriteLine("enter student name: ");
+                string name = Console.ReadLine();
+
+                Console.WriteLine("enter class: ");
+                string Class = Console.ReadLine();
+
+                sw.WriteLine(name + "," + Class);
+            }
+            finally
+            {
+                sw.Close();
+                fs.Close();
+            }
+        }
+
+        public void FileRead()
+        {
+            FileStream fs1 = new FileStream("StudentData.txt",FileMode.Open,FileAccess.Read);
+            StreamReader sw1 = null;
+
+            try
+            {
+                sw1 = new StreamReader(fs1);
+                bool LastLine = false;
+                while (!LastLine)
+                {
+                    StudentClass s = new StudentClass();
+                    String temp = sw1.ReadLine();
+
+                    if (temp == null)
+                    {
+                        Console.WriteLine("last data reached");
+                        break;
+                    }
+                    s.StudentName = temp.Split('-')[0];
+                    s.Class = Convert.ToInt32(temp.Split('-')[1]);
+                    StudentClass.StudentList.Add(s);
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("error message: " + ex.Message);
+            }
+            finally
+            {
+                sw1.Close();
+                fs1.Close();
+            }
+        }
+
+        public void SearchStudent()
+        {
+            Console.WriteLine("enter student name: ");
+            string name = Console.ReadLine();
+
+            var Details = File.ReadLines("StudentData.txt").OrderBy((line => (line.Split(',')[1]))).ToList();
+
+            bool found = false;
+
+            foreach (var item in Details)
+            {
+                if (item.Contains(name))
+                {
+                    Console.WriteLine($"Name: {item.Split('-')[0]} \n Class Room  : {item.Split('-')[1]} ");
+                    found = true;
+                }
+            }
+
+            if (!found)
+            {
+                Console.WriteLine("student not found. enter a valid name.");
+            }
+        }
+
+
+
+
+
+
+
+    }
+
+=====================================================================
+
+TEACHER CLASS
+
+    public class TeacherClass : InterOp
+    {
+		private string teachername;
+
+		public string TeacherName
+		{
+			get { return teachername; }
+			set { teachername = value; }
+		}
+
+		private int teacherclass;
+
+		public int Class
+		{
+			get { return teacherclass; }
+			set { teacherclass = value; }
+		}
+
+		private string tsubject;
+
+		public string Subject
+		{
+			get { return tsubject; }
+			set { tsubject = value; }
+		}
+
+		public static List<TeacherClass> TeacherList = new List<TeacherClass>();
+
+		public void FileWrite()
+		{
+			FileStream fs = new FileStream("TeacherData.txt", FileMode.Append, FileAccess.Write);
+			StreamWriter sw = null;
+
+			try
+			{
+				sw = new StreamWriter(fs);
+				Console.WriteLine("enter teacher name: ");
+				string name = Console.ReadLine();
+
+				Console.WriteLine("enter class: ");
+				string Class = Console.ReadLine();
+
+				Console.WriteLine("enter subject: ");
+				string SubjectName = Console.ReadLine();
+
+				sw.WriteLine(name + "," + Class + "," + SubjectName);
+			}
+			finally
+			{
+				sw.Close();
+				fs.Close();
+			}
+		}
+
+		public void FileRead()
+		{
+			FileStream fs1 = new FileStream("TeacherData.txt", FileMode.Open, FileAccess.Read);
+			StreamReader sr = null;
+
+			try
+			{
+				sr = new StreamReader(fs1);
+				bool LastLine = false;
+
+				while (!LastLine)
+				{
+					TeacherClass t = new TeacherClass();
+					String temp = sr.ReadLine();
+
+					if (temp == null)
+					{
+						Console.WriteLine("last data reached");
+						break;
+					}
+
+					var tempfile = temp.Split('-');
+					t.TeacherName = tempfile[0];
+					t.Class = Convert.ToInt32(tempfile[1]);
+					t.Subject = tempfile[2];
+
+					TeacherClass.TeacherList.Add(t);
+				}
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine("error message from teacher: " + ex.Message);
+			}
+			finally
+			{
+				sr.Close();
+				fs1.Close();
+			}
+		}
+
+		public void PrintData()
+		{
+			foreach (var item in TeacherList)
+			{
+				Console.WriteLine("teacher name: " + item.TeacherName);
+				Console.WriteLine("teacher subject: " + item.Subject);
+			}
+			Console.WriteLine("------------------------");
+		}
+
+		public void SearchTeacher()
+		{
+			Console.WriteLine("enter teacher's name: ");
+			string name = Console.ReadLine();
+
+            var Details = File.ReadLines("TeacherData.txt").OrderBy((line => (line.Split(',')[1]))).ToList();
+			bool found = false;
+
+            foreach (var item in Details)
+            {
+                if (item.Contains(name))
+                {
+                    Console.WriteLine($"Name: {item.Split('-')[0]} \n Class Room  : {item.Split('-')[1]} \n Subject : {item.Split('-')[2]} ");
+                    found = true;
+                }
+            }
+
+            if (!found)
+            {
+                Console.WriteLine("teacher not found. enter a valid name.");
+            }
+
+        }
+
+
+
+    }
+
+=====================================================================
+
+SUBJECT CLASS
+
+    public class SubjectClass : InterOp
+    {
+        public static List<SubjectClass> SubjectList = new List<SubjectClass>();
+
+		private string subjectname;
+
+		public string SubjectName
+		{
+			get { return subjectname; }
+			set { subjectname = value; }
+		}
+
+		private int subjectcode;
+
+		public int SubjectCode
+		{
+			get { return subjectcode; }
+			set { subjectcode = value; }
+		}
+
+		public void FileRead()
+		{
+			FileStream fs = new FileStream("SubjectData.txt",FileMode.Open,FileAccess.Read);
+			StreamReader sr = null;
+
+            try
+            {
+                sr = new StreamReader(fs);
+                bool LastLine = false;
+                while (!LastLine)
+                {
+                    SubjectClass s = new SubjectClass();
+                    String temp = sr.ReadLine();
+                    if (temp == null)
+                    {
+                        Console.WriteLine("Last Data reached...");
+                        break;
+                    }
+                    s.SubjectName = temp.Split('-')[0];
+                    s.SubjectCode = Convert.ToInt32(temp.Split('-')[1]);
+                    SubjectClass.SubjectList.Add(s);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error Message = " + ex.Message);
+
+            }
+            finally
+            {
+                sr.Close();
+                fs.Close();
+
+            }
+        }
+
+        public void FileWrite()
+        {
+            FileStream fs1 = new FileStream("SubjectData.txt", FileMode.Append, FileAccess.Write);
+            StreamWriter sw = null;
+            try
+            {
+                sw = new StreamWriter(fs1);
+                Console.WriteLine("Enter Subject Name :");
+                string name = Console.ReadLine();
+                Console.WriteLine("Enter Subject Code :");
+                string Class = Console.ReadLine();
+                sw.WriteLine(name + "," + Class);
+            }
+            finally
+            {
+                sw.Close();
+                fs1.Close();
+
+            }
+
+        }
+
+        public void PrintData()
+        {
+            foreach (var item in SubjectList)
+            {
+                Console.WriteLine("Subject Name : " + item.SubjectName + " Subject Code :" + item.SubjectCode);
+            }
+            Console.WriteLine("-----------------------------");
+        }
+
+        public void SearchSubject()
+        {
+            Console.WriteLine("enter subject name: ");
+            string name = Console.ReadLine();
+
+            var Details = File.ReadLines("SubjectData.txt").OrderBy((line => (line.Split(',')[1]))).ToList();
+            bool found = false;
+
+            foreach (var item in Details)
+            {
+                if (item.Contains(name))
+                {
+                    Console.WriteLine($"Name: {item.Split('-')[0]} \n subject code  : {item.Split('-')[1]} ");
+                    found = true;
+                }
+            }
+
+            if (!found)
+            {
+                Console.WriteLine("subject not found. enter a valid name.");
+            }
+
+        }
+
+
+    }
+
+
+=====================================================================
+
+INTERFACE
+
+
+    internal interface InterOp
+    {
+        void FileRead();
+        void FileWrite();
+        void PrintData();
+    }
+
+=====================================================================
+
+MAIN PROGRAM
+
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            #region CreateFile
+
+            File.Create("StudentData.txt");
+            File.Create("TeacherData.txt");
+            File.Create("SubjectData.txt");
+
+            #endregion
+
+            StudentClass s = new StudentClass();
+            s.FileWrite();
+            s.FileRead();
+            s.PrintData();
+
+            TeacherClass t = new TeacherClass();
+            t.FileWrite();
+            t.FileRead();
+            t.PrintData();
+
+            SubjectClass sub = new SubjectClass();
+            sub.FileWrite();
+            sub.FileRead();
+            sub.PrintData();
+
+            bool con;
+
+            do
+            {
+                Console.WriteLine("1. Add  2. Print  3. Search");
+                int choice = Convert.ToInt32(Console.ReadLine());
+
+                switch (choice)
+                {
+                    case 1:
+                        Console.WriteLine("1. Student  2. Teacher  3. Subject");
+                        int ch1 = Convert.ToInt32(Console.ReadLine());
+
+                        switch (ch1)
+                        {
+                            case 1:
+                                StudentClass s1 = new StudentClass();
+                                s1.FileWrite();
+                                break;
+                            case 2:
+                                TeacherClass t1 = new TeacherClass();
+                                t1.FileWrite();
+                                break;
+                            case 3:
+                                SubjectClass sub1 = new SubjectClass();
+                                sub1.FileWrite();
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+
+                    case 2:
+                        Console.WriteLine("1. Student  2. Teacher  3. Subject");
+                        int ch2 = Convert.ToInt32(Console.ReadLine());
+
+                        switch (ch2)
+                        {
+                            case 1:
+                                StudentClass s2 = new StudentClass();
+                                s2.FileWrite();
+                                break;
+                            case 2:
+                                TeacherClass t2 = new TeacherClass();
+                                t2.FileWrite();
+                                break;
+                            case 3:
+                                SubjectClass sub2 = new SubjectClass();
+                                sub2.FileWrite();
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+
+                    case 3:
+                        Console.WriteLine("1. Student  2. Teacher  3. Subject");
+                        int ch3 = Convert.ToInt32(Console.ReadLine());
+
+                        switch (ch3)
+                        {
+                            case 1:
+                                StudentClass s3 = new StudentClass();
+                                s3.FileWrite();
+                                break;
+                            case 2:
+                                TeacherClass t3 = new TeacherClass();
+                                t3.FileWrite();
+                                break;
+                            case 3:
+                                SubjectClass sub3 = new SubjectClass();
+                                sub3.FileWrite();
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+
+                        default :
+                        break;
+                }
+                Console.WriteLine("continue? (y/n)");
+                string ans = Console.ReadLine();
+
+                if (ans == "y" || ans == "Y")
+                {
+                    con = true;
+                }
+                else
+                {
+                    con = false;
+                }
+
+
+            } while (con);
+        }
+    }
+
